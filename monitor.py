@@ -4,7 +4,7 @@ import os
 TG_TOKEN = os.getenv("TG_TOKEN")
 CHAT_ID = os.getenv("TG_CHAT")
 
-MAX_PRICE = 0.65  # предел $/час
+MAX_PRICE = 0.65   # предел $/час
 GPU_NAME = "RTX_3090"
 
 def send_message(text):
@@ -21,7 +21,7 @@ def check_vast():
     r = requests.get(url, params=params)
     data = r.json()
 
-    if "offers" not in data:
+    if "offers" not in data or len(data["offers"]) == 0:
         return
 
     cheapest = sorted(data["offers"], key=lambda x: x["dph_total"])[0]
@@ -31,5 +31,4 @@ def check_vast():
         send_message(f"🔥 Дёшево! {GPU_NAME} за ${price}/час")
 
 if __name__ == "__main__":
-    send_message("Тест связи с Telegram ✅")
-
+    check_vast()
