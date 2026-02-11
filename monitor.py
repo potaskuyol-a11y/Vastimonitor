@@ -31,4 +31,5 @@ def check_vast():
         send_message(f"🔥 Дёшево! {GPU_NAME} за ${price}/час")
 
 if __name__ == "__main__":
-    check_vast()
+    send_message("Тест связи с Telegram ✅")
+
