@@ -4,7 +4,7 @@ import os
 TG_TOKEN = os.getenv("TG_TOKEN")
 CHAT_ID = os.getenv("TG_CHAT")
 
-MAX_PRICE = 0.65   # предел $/час
+MAX_PRICE = 100   # предел $/час
 GPU_NAME = "RTX_3090"
 
 def send_message(text):
