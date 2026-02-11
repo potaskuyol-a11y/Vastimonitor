@@ -4,31 +4,23 @@ import os
 TG_TOKEN = os.getenv("TG_TOKEN")
 CHAT_ID = os.getenv("TG_CHAT")
 
-MAX_PRICE = 100   # предел $/час
-GPU_NAME = "RTX_3090"
-
 def send_message(text):
     url = f"https://api.telegram.org/bot{TG_TOKEN}/sendMessage"
     requests.get(url, params={"chat_id": CHAT_ID, "text": text})
 
 def check_vast():
     url = "https://console.vast.ai/api/v0/bundles"
-    params = {
-        "q": f"gpu_name={GPU_NAME}",
-        "order": "dph_total"
-    }
 
-    r = requests.get(url, params=params)
-    data = r.json()
+    try:
+        r = requests.get(url)
 
-    if "offers" not in data or len(data["offers"]) == 0:
-        return
+        print("STATUS CODE:", r.status_code)
+        print("HEADERS:", r.headers)
+        print("RESPONSE START:")
+        print(r.text[:1500])  # первые 1500 символов
 
-    cheapest = sorted(data["offers"], key=lambda x: x["dph_total"])[0]
-    price = cheapest["dph_total"]
-
-    if price <= MAX_PRICE:
-        send_message(f"🔥 Дёшево! {GPU_NAME} за ${price}/час")
+    except Exception as e:
+        print("ERROR:", str(e))
 
 if __name__ == "__main__":
     check_vast()
